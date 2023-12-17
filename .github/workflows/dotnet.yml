@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     name: Build and Upload Release Asset
-    runs-on: ubuntu-latest
+    runs-on: windows-latest 
     steps:
       - name: Print GitHub workspace path
         run: echo $GITHUB_WORKSPACE
@@ -25,9 +25,9 @@ jobs:
         id: commit_hash
         run: echo "::set-output name=hash::$(git rev-parse --short=8 $GITHUB_SHA)"
       - name: Build project
-        run: dotnet build -c Release -p:SourceLinkCreate=true -p:PublishProfile=FolderProfile TG-BOT/TG-BOT/TG-BOT.csproj
+        run: dotnet build -c Release -p:SourceLinkCreate=true -p:PublishProfile=FolderProfile ReportSystem.csproj
       - name: Publish Artifact
-        run: dotnet publish -c Release -o ./publish -p:SourceLinkCreate=true -p:PublishProfile=FolderProfile TG-BOT/TG-BOT/TG-BOT.csproj
+        run: dotnet publish -c Release -o ./publish -p:SourceLinkCreate=true -p:PublishProfile=FolderProfile ReportSystem.csproj
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -35,7 +35,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.commit_hash.outputs.hash }}
-          release_name: v123
+          release_name: v123  # Use a fixed release name or modify as needed
           draft: false
           prerelease: true
       - name: Upload Release Asset
